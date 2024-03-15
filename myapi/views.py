@@ -3,10 +3,12 @@ from .models import Register, CourseContent,ParticularCourse,Paid_Course_Content
 from . import serializers
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.core.mail import send_mail
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
+
 import random
 
 
@@ -102,3 +104,18 @@ def test2(request):
     data=Paid_Course_Content.objects.filter(Select="Python")
     serializer=serializers.Paid_Course_Content_Serializers(data,many=True)
     return Response(serializer.data,status=status.HTTP_200_OK)
+
+class Payment_api(APIView):
+    def get(self,request):
+        return Response("helloworld of payment",status=status.HTTP_200_OK)
+    def post(self,request):
+      try:
+        a=request.data
+        data=Register.objects.get(email=a['email'],name=a['name'])
+        if data != None:
+            Course=Paid_Course_Content.objects.filter(Select=data.Course_purchased)
+            rest=serializers.Paid_Course_Content_Serializers(Course,many=True)
+            return Response(rest.data,status=status.HTTP_202_ACCEPTED)
+        return Response({"this":"eroor"},status=status.HTTP_204_NO_CONTENT)
+      except Exception as e:
+          return Response({"err":f"{e}"},status=status.HTTP_204_NO_CONTENT)

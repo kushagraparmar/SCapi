@@ -1,5 +1,6 @@
 from . import views 
 from django.urls import path
+from myapi.views import Payment_api
 
 
 urlpatterns=[
@@ -9,6 +10,7 @@ urlpatterns=[
     path('register',views.register,name='register'),
     path('login',views.Login,name='login'),
     path('',views.test),
+    path('payment/',Payment_api.as_view()),
     path('abc',views.check,name='abc'),
     path('tes',views.tes),
 ]

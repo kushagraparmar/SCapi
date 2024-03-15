@@ -18,6 +18,14 @@
     <input type="submit" name="" id="" value="submit">
 
 </form>
+
+{% for i in key %}
+<video src="{{i.Paid_Course_video}}">
+    <source type="video/mp4" src="{{i.Paid_Course_video}}" />
+</video>
+    
+
+{% endfor %}
 </body>
 
 </html>

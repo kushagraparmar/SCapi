@@ -33,6 +33,7 @@ class Demo(models.Model):
          return self.Course_QA
 
 class CourseContent(models.Model):
+    Course_PName=models.CharField(max_length=100)
     Course_name=models.CharField(max_length=100)
     Course_students=models.CharField(max_length=100)    
     Course_image=models.ImageField(unique=True)
@@ -41,7 +42,7 @@ class CourseContent(models.Model):
     Course_time=models.CharField(max_length=100)
     Course_use=models.ForeignKey(ParticularCourse,related_name="kush",on_delete=models.CASCADE)
     def __str__(self):
-        return self.Course_name
+        return self.Course_PName
     
 class Rating(models.Model):
     Course_ratername=models.CharField(max_length=51)
@@ -65,7 +66,7 @@ class Paid_Course_Content(models.Model):
     ("Java", "Java"), 
     ("Python", "Python"), 
     ("Dot_net", "Dot_net"), 
-    ("Java_Script", "Java_Script"), 
+    ("Javascript", "Javascript")
 )) 
     Paid_Course_video=models.CharField(max_length=200)
     # Selected_Student=models.ForeignKey(Register,related_name="Selected",on_delete=models.CASCADE,blank=True)    

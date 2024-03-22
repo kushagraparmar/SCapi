@@ -53,7 +53,8 @@ def register(request):
   if request.method == 'PUT':
     ab=Register.objects.get(email=datass['email'])
     otpenter=request.data['name']
-    if otpenter == ab.otp:
+    # print(otpenter , ab.otp,"\n",type(otpenter),type(ab.otp)) just for checking because the otp field was an integer so it cannot be comapared by string
+    if (otpenter == str(ab.otp)):
         return Response(serializer_register.data,status=status.HTTP_201_CREATED)
     else:
         ab.delete()
@@ -97,7 +98,7 @@ def check(request):
 def tes(request):
     if request.method == 'PUT':
         print(request.data['name'])
-    return  HttpResponse('wrong otp')
+    return HttpResponse('wrong otp')
 
 @api_view(['get'])
 def test2(request):
@@ -112,10 +113,13 @@ class Payment_api(APIView):
       try:
         a=request.data
         data=Register.objects.get(email=a['email'],name=a['name'])
+        data.Course_purchased=a['Course_name']
+        data.save()
         if data != None:
             Course=Paid_Course_Content.objects.filter(Select=data.Course_purchased)
             rest=serializers.Paid_Course_Content_Serializers(Course,many=True)
             return Response(rest.data,status=status.HTTP_202_ACCEPTED)
         return Response({"this":"eroor"},status=status.HTTP_204_NO_CONTENT)
       except Exception as e:
+          
           return Response({"err":f"{e}"},status=status.HTTP_204_NO_CONTENT)
